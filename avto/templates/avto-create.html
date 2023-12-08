@@ -1,0 +1,12 @@
+{% extends "index.html" %}
+{% block content %}
+<div class="card-body">
+    <h5>Yangi avtomobile yaratish</h5>
+    <form usuli="post">
+        {% csrf_token %}
+        {{form.as_p}}
+        <a type="button" class="btn btn-danger" href="{%url 'avto-list' %}">Cancel</a>
+        <button type="submit" class="btn btn-success">Create</button>
+    </form>
+</div>
+{% endblock %}

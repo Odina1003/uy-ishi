@@ -1,0 +1,29 @@
+{% extends "index.html" %}
+{% block content %}
+<div class="card-body">
+    <h4>Avtomobile roʻyxati</h4>
+    <jadval sinfi="jadval">
+        <bosh>
+            <tr>
+                <th scope="col">Model</th>
+                <th scope="col">Year</th>
+                <th scope="col">Color</th>
+                <th scope="col">Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for avto in avtos %}
+            <tr>
+                <td>{{avto.model}}</td>
+                <td>{{avto.year}}</td>
+                <td>{{avto.color}}</td>
+                <td>{{avto.price}}</td>
+                    <a type="button" class="btn btn-danger" href="/avto_delete/{{avto.id}}">Delete</a>
+                </td>
+            </tr>
+            {% end for %}
+        </tbody>
+    </jadval>
+    <a type="button" class="btn btn-success" href="{%url 'avto-create' %}">Create</a>
+</div>
+{% endblock %}
