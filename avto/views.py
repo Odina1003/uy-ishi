@@ -1,28 +1,44 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse_lazy
 from .models import Avtomobile
 from .forms import Avto
+from django.views import View
+from django.views.generic import ListView, DeleteView, DetailView, CreateView, UpdateView
+
+class AvtoListView(ListView):
+    model = Avtomobile
+    template_name = 'avtos.html'
+    context_object_name = 'avtos'
 
 
-# Create your views here.
-def avtos(request):
-    avtomobiles = Avtomobile.objects.all()
-    return render(request=request, template_name='index.html', context={'avtomobiles':avtomobiles})
+    def get_context_data(self, **kwargs):
+        context = super(AvtoListView, self).get_context_data(**kwargs)
+        avtos = Avtomobile.objects.all()
+        context['avtos'] = avtos
+        return context
 
-def avto_create(request):  
-    if request.method == "POST":  
-        form = Avto(request.POST)  
-        if form.is_valid():  
-            try:  
-                form.save() 
-                model = form.instance
-                return redirect('avto-list')  
-            except:  
-                pass  
-    else:  
-        form = Avto()  
-    return render(request=request, template_name='avto-create.html', context={'form':form}) 
+class AvtoDetailView(DetailView):
+    model = Avtomobile
+    template_name = 'avto.html'
+    context_object_name = 'avto'
 
-def avto_delete(request, pk):
-    post = get_object_or_404(Avtomobile, id=pk)
-    post.delete()
-    return redirect('/avtomobiles')
+class AvtoDeleteView(DeleteView):
+    model = Avtomobile
+    template_name = 'delete.html'
+    success_url = reverse_lazy('avtos')
+
+class AvtoCreateView(CreateView):
+    model = Avtomobile
+    template_name = 'avto-create.html'
+    fields = ('model', 'year', 'color', 'price', 'image')
+    success_url = reverse_lazy('avtos')
+
+class AvtoUpdateView(UpdateView):
+
+    model = Avtomobile
+    template_name = 'avto-update.html'
+    context_object_name = 'avto'
+    fields = ('model', 'year', 'color', 'price', 'image')
+
+    def get_success_url(self):
+        return reverse_lazy('avto', kwargs={'pk': self.object.id})

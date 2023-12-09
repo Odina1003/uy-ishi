@@ -8,4 +8,5 @@ class Avtomobile(models.Model):
     price = models.IntegerField(null=True, blank=True)
     image = models.ImageField(null=True, blank=True)
 
-
+    def __str__(self) -> str:
+        return self.model
